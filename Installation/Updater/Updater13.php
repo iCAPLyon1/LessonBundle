@@ -45,6 +45,7 @@ class Updater13 {
                 $chapter->setSlug('slug_placeholder_'.$cpt++);
             }
         }
+        $em->flush();
         //setting slug to null value will regenerate it when em is flushed
         foreach ($chapters as $chapter) {
             $chapter->setSlug(null);
