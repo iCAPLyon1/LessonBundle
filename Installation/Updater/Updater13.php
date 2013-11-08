@@ -38,10 +38,12 @@ class Updater13 {
     public function setSlug(){
         $em = $this->container->get('doctrine.orm.entity_manager');
         $chapters = $em->getRepository("IcapLessonBundle:Chapter")->findAll();
+        $cpt = 0;
         foreach ($chapters as $chapter) {
             if($chapter->getSlug() == null){
-                $chapter->setSlug('');
+                $chapter->setSlug('test'.$cpt++);
             }
+            $em->persist($chapter);
         }
         $em->flush();
     }
