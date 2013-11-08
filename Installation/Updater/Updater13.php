@@ -37,13 +37,13 @@ class Updater13 {
     }
 
     public function setSlug(){
-        $this->displayLog("setSlug start");
+        $this->logger->displayLog("setSlug start");
         $em = $this->container->get('doctrine.orm.entity_manager');
         $chapters = $em->getRepository("IcapLessonBundle:Chapter")->findAll();
         foreach ($chapters as $chapter) {
-            $this->displayLog("chapter found");
+            $this->logger->displayLog("chapter found");
             if($chapter->getSlug() == null){
-                $this->displayLog("chapter slug updated");
+                $this->logger->displayLog("chapter slug updated");
                 $chapter->setSlug(null);
             }
         }
