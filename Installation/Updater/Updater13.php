@@ -39,11 +39,15 @@ class Updater13 {
         $em = $this->container->get('doctrine.orm.entity_manager');
         $chapters = $em->getRepository("IcapLessonBundle:Chapter")->findAll();
         $cpt = 0;
+        //first pass needed to set slug value to something other than NULL, otherwise entities wont be persisted and wont trigger slug generation
         foreach ($chapters as $chapter) {
             if($chapter->getSlug() == null){
-                $chapter->setSlug('test'.$cpt++);
+                $chapter->setSlug('slug_placeholder_'.$cpt++);
             }
-            $em->persist($chapter);
+        }
+        //setting slug to null value will regenerate it when em is flushed
+        foreach ($chapters as $chapter) {
+            $chapter->setSlug(null);
         }
         $em->flush();
     }
