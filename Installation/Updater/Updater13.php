@@ -33,18 +33,14 @@ class Updater13 {
     {
         //generate missing slugs
         $this->setSlug();
-
     }
 
     public function setSlug(){
-        $this->logger->displayLog("setSlug start");
         $em = $this->container->get('doctrine.orm.entity_manager');
         $chapters = $em->getRepository("IcapLessonBundle:Chapter")->findAll();
         foreach ($chapters as $chapter) {
-            $this->logger->displayLog("chapter found");
             if($chapter->getSlug() == null){
-                $this->logger->displayLog("chapter slug updated");
-                $chapter->setSlug(null);
+                $chapter->setSlug('');
             }
         }
         $em->flush();
