@@ -31,9 +31,7 @@ class LessonController extends Controller
 
     /**
      * @param string $permission
-     *
      * @param Lesson $lesson
-     *
      * @throws AccessDeniedException
      */
     protected function checkAccess($permission, Lesson $lesson)
