@@ -11,6 +11,7 @@ namespace Icap\LessonBundle\Installation\Updater;
 
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Icap\LessonBundle\Entity\Chapter;
+use Icap\LessonBundle\Entity\Lesson;
 
 
 class Updater13 {
@@ -29,14 +30,10 @@ class Updater13 {
         $this->logger = $logger;
     }
 
-    public function preUpdate()
-    {
-        //generate missing slugs
-        $this->setChapterTitles();
-    }
-
     public function postUpdate()
     {
+        //generating missing titles (root chapters)
+        $this->setChapterTitles();
         //generate missing slugs
         $this->setSlug();
     }
@@ -47,12 +44,11 @@ class Updater13 {
         foreach ($chapters as $chapter) {
             if($chapter->getTitle() == null){
                 //if root chapter, take name of its lesson
-                if($chapter->getRoot()->getId() == $chapter->getId())
+                if($chapter->getRoot() == $chapter->getId())
                 {
-                    $chapter->setTitle($chapter->getLesson()->getTitle());
+                    $chapter->setTitle($chapter->getLesson()->getResourceNode()->getName());
                 }
-                else
-                {
+                else{
                     //case treated to match current database state (title nullable), tho this case shouldnt happen since UI prevent inputing empty titles
                     $chapter->setTitle('Default title');
                 }

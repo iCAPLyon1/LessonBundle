@@ -1,6 +1,6 @@
 <?php
 
-namespace Icap\LessonBundle\Migrations\ibm_db2;
+namespace Icap\LessonBundle\Migrations\oci8;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
@@ -8,15 +8,17 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated migration based on mapping information: modify it with caution
  *
- * Generation date: 2013/11/07 06:14:14
+ * Generation date: 2013/11/13 03:48:08
  */
-class Version20131107181414 extends AbstractMigration
+class Version20131113154806 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
         $this->addSql("
             ALTER TABLE icap__lesson_chapter 
-            ADD COLUMN slug VARCHAR(128) DEFAULT NULL
+            ADD (
+                slug VARCHAR2(128) DEFAULT NULL
+            )
         ");
         $this->addSql("
             CREATE UNIQUE INDEX UNIQ_3D7E3C8C989D9B62 ON icap__lesson_chapter (slug)
@@ -27,7 +29,7 @@ class Version20131107181414 extends AbstractMigration
     {
         $this->addSql("
             ALTER TABLE icap__lesson_chapter 
-            DROP COLUMN slug
+            DROP (slug)
         ");
         $this->addSql("
             DROP INDEX UNIQ_3D7E3C8C989D9B62
