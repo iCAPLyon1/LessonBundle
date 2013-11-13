@@ -29,10 +29,36 @@ class Updater13 {
         $this->logger = $logger;
     }
 
+    public function preUpdate()
+    {
+        //generate missing slugs
+        $this->setChapterTitles();
+    }
+
     public function postUpdate()
     {
         //generate missing slugs
         $this->setSlug();
+    }
+
+    public function setChapterTitles(){
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $chapters = $em->getRepository("IcapLessonBundle:Chapter")->findAll();
+        foreach ($chapters as $chapter) {
+            if($chapter->getTitle() == null){
+                //if root chapter, take name of its lesson
+                if($chapter->getRoot()->getId() == $chapter->getId())
+                {
+                    $chapter->setTitle($chapter->getLesson()->getTitle());
+                }
+                else
+                {
+                    //case treated to match current database state (title nullable), tho this case shouldnt happen since UI prevent inputing empty titles
+                    $chapter->setTitle('Default title');
+                }
+            }
+        }
+        $em->flush();
     }
 
     public function setSlug(){
