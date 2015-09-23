@@ -21,6 +21,8 @@ class LogChapterUpdateEvent extends AbstractLogResourceEvent implements Notifiab
      */
     public function __construct(Lesson $lesson, Chapter $chapter, $changeSet)
     {
+        $this->lesson = $lesson;
+        
         $details = array(
             'chapter' => array(
                 'lesson'    => $lesson->getId(),
